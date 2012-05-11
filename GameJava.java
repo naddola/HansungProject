@@ -28,10 +28,17 @@ public class GameJava extends Applet implements Runnable {
 	// 괴물 목적지 위치 저장
 	int w2 = 200;
 	int z2 = 200;
-
+	
+	int wr=(int) (Math.random()*7-3.5);
+	int zr=(int) (Math.random()*7-3.5);
+	
+	int rr;
+	
 	int runGame; // 게임모드 변수
 	int status; // 평소에는 0인데 CRTL키르 누르면 1이 되면서 땅 먹으러 나갈 수 있다.
 
+	
+	
 	public void init() {
 		msg = "init";
 		off = createImage(500, 500);
@@ -61,7 +68,7 @@ public class GameJava extends Applet implements Runnable {
 		while (true) {
 
 			try {
-				clock.sleep(300);
+				clock.sleep(10);
 			} catch (InterruptedException ie) {
 			}
 
@@ -93,17 +100,18 @@ public class GameJava extends Applet implements Runnable {
 	public void drawMan() {
 		msg = "drawMan";
 		offG.setColor(Color.green);
-		offG.fillOval(x-5, y-5, 10, 10);
+		offG.fillOval(x - 5, y - 5, 10, 10);
 	}
 
 	public void drawLine() {
 		offG.setColor(Color.red);
-		if (xc >= 1){
-	//		System.out.println("============================ "+xc);
+		if (xc >= 1) {
+			// System.out.println("============================ "+xc);
 			for (int i = 0; i < xc; i++) {
-//				System.out.println(x2[i]+"  "+y2[i]+"  "+ x2[i + 1]+"   "+ y2[i + 1]);
+				// System.out.println(x2[i]+"  "+y2[i]+"  "+ x2[i + 1]+"   "+
+				// y2[i + 1]);
 				offG.drawLine(x2[i], y2[i], x2[i + 1], y2[i + 1]);
-				
+
 			}
 		}
 	}
@@ -119,17 +127,48 @@ public class GameJava extends Applet implements Runnable {
 	}
 
 	public void moveET() {
-		if (w < w2 || z < z2) {
-			w = w + 2;
-			z = z + 2;
-		} else {
-			moveSetET();
+		rr=(int) (Math.random()*3+1);
+		System.out.print(rr);
+		if(w>0 && w<450 && z>0 &&z<450 ){
+				if(wr==0 && zr==0){
+					while(wr==0&&zr==0){
+						wr=(int) (Math.random()*7-3.5);
+						zr=(int) (Math.random()*7-3.5);
+					}
+				}
+			
+			w=w+wr;
+			z=z+zr;
+		}
+		else{
+			if(w==0 && z!=0){
+				wr=(int) (Math.random()*3+1);
+				zr=(int) (Math.random()*7-3.5);
+			}
+			else if(w!=0 && z==0){
+				wr=(int) (Math.random()*7-3.5);
+				zr=(int) (Math.random()*3+1);
+			}
+			else if(w==450 && z!=450){
+				wr=(int) (Math.random()*2-3.5);
+				zr=(int) (Math.random()*7-3.5);
+			}
+			else if(w!=450 && z==450){
+				wr=(int) (Math.random()*7-3.5);
+				zr=(int) (Math.random()*2-3.5);
+			}
+			else{
+				wr=(int) (Math.random()*7-3.5);
+				zr=(int) (Math.random()*7-3.5);
+			}
+			w=w+wr;
+			z=z+zr;
 		}
 	}
 
 	public void moveSetET() {
-		w2 = (int) Math.random() * 500;
-		z2 = (int) Math.random() * 500;
+		w2 = (int) (Math.random() * 500);
+		z2 = (int) (Math.random() * 500);
 	}
 
 	public void paint(Graphics g) {
@@ -143,7 +182,7 @@ public class GameJava extends Applet implements Runnable {
 		public void keyPressed(KeyEvent e) {
 			{
 				keyCode = e.getKeyCode();
-			//	System.out.println(keyCode+"   "+before+"   "+xc);
+				// System.out.println(keyCode+"   "+before+"   "+xc);
 
 				if (keyCode == KeyEvent.VK_LEFT) {
 					x = x - 2;
@@ -162,32 +201,34 @@ public class GameJava extends Applet implements Runnable {
 				}
 
 				else if (keyCode == 17) {
-					
+
 					status = 1;
 					x2[xc] = x;
 					y2[xc++] = y;
 					x2[xc] = x;
 					y2[xc] = y;
-					
-					System.out.println("17눌렸으     "+ x2[xc-1]  + "   "+ x );
+
+					System.out.println("17눌렸으     " + x2[xc - 1] + "   " + x);
 				}
-				
-				//CRTL 눌럿을 때 각 꼭지점 저장
-				if(status == 1 && before == keyCode && before != 17){
+
+				// CRTL 눌럿을 때 각 꼭지점 저장
+				if (status == 1 && before == keyCode && before != 17) {
 					x2[xc] = x;
 					y2[xc] = y;
-				}
-				else if(status == 1 && before != keyCode && keyCode != 17 && before != 17){	
+				} else if (status == 1 && before != keyCode && keyCode != 17
+						&& before != 17) {
 					System.out.println("=================");
-					if(x2[xc] != x) x=x-2;
-					else if(y2[xc] != y) y=y-2;
+					if (x2[xc] != x)
+						x = x - 2;
+					else if (y2[xc] != y)
+						y = y - 2;
 					x2[++xc] = x;
 					y2[xc] = y;
-					System.out.println(x2[xc]+"  "+y2[xc]);
+					System.out.println(x2[xc] + "  " + y2[xc]);
 				}
-				
+
 				before = keyCode;
-				
+
 				drawMap();
 				drawMan();
 				drawET();
