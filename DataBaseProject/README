@@ -1,0 +1,12 @@
+2012년 3학년 1학기 6월
+
+DataBase Project
+
+with 조선우
+
+ODBC연동해야한다. 연동 할 때 이름 : UniversityDBODBC
+
+실패한 것
+- SQL문을 이용한 Join문을 사용 하지 않았다.
+- 원래 작업내역을 저장 할 수 있게 만드려 했으나 귀찮아서 관둠
+
